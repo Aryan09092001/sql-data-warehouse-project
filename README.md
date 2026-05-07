@@ -1,7 +1,5 @@
 # Data Warehouse and Analytics Project
 
-Welcome to the **Data Warehouse and Analytics Project** repository! 🚀
-
 This repository walks through an end-to-end data warehousing and analytics solution — from raw CSV ingestion to a star-schema gold layer ready for business reporting. Built as a portfolio project, it reflects modern data engineering practices, layered architecture, and analytics-first design thinking.
 
 ---
