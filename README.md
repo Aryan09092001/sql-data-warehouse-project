@@ -107,7 +107,7 @@ Translate the warehouse into actionable business insight using SQL-based analyti
 
 The goal is to give stakeholders the metrics and trends they need to make confident, data-backed decisions.
 
-For deeper requirement specs, see [`docs/requirements.md`](docs/requirements.md).
+
 
 ---
 
