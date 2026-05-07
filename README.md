@@ -3,20 +3,48 @@
 This repository walks through an end-to-end data warehousing and analytics solution — from raw CSV ingestion to a star-schema gold layer ready for business reporting. Built as a portfolio project, it reflects modern data engineering practices, layered architecture, and analytics-first design thinking.
 
 ---
+## 🏗️ High-Level Data Architecture
 
-## 🏗️ Data Architecture
+The warehouse follows the **Medallion Architecture** pattern, with data flowing left-to-right through four distinct stages — from raw source files, through three progressively refined warehouse layers, and finally into consumption tools.
 
-This project is built on the **Medallion Architecture** pattern, organizing data into three progressively refined layers — **Bronze**, **Silver**, and **Gold** — each with a distinct role and quality contract.
+```
+📁 Sources  ──►  🥉 Bronze  ──►  🥈 Silver  ──►  🥇 Gold  ──►  📊 Consume
+```
 
-| Layer       | Role                          | What Lives Here                                                                    |
-|-------------|-------------------------------|------------------------------------------------------------------------------------|
-| 🥉 **Bronze** | Raw ingestion                 | Untouched CSV data loaded directly from the ERP and CRM source systems.            |
-| 🥈 **Silver** | Cleansed & conformed          | Validated, deduplicated, and standardized data prepared for downstream modeling.   |
-| 🥇 **Gold**   | Business-ready analytics tier | Star-schema dimension and fact views optimized for reporting and BI consumption.   |
+### Stage-by-Stage Breakdown
 
-This separation makes the pipeline **traceable** (you can always go back to raw), **reproducible** (each layer has a clear contract), and **scalable** (new sources slot in without disturbing analytics).
+| Stage             | 📁 **Sources**                       | 🥉 **Bronze Layer**                                | 🥈 **Silver Layer**                                                                        | 🥇 **Gold Layer**                                                  | 📊 **Consume**                                              |
+|-------------------|--------------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------|-------------------------------------------------------------|
+| **Role**          | Raw input from upstream systems      | Untouched landing zone for ingested data           | Cleansed, conformed, and standardized data                                                 | Business-ready analytical model                                    | Downstream consumption of warehouse data                    |
+| **Object Type**   | CSV files                            | Tables                                             | Tables                                                                                     | Views                                                              | Dashboards, queries, and ML pipelines                       |
+| **Data Content**  | ERP and CRM source extracts          | Raw data, exactly as received                      | Cleaned and standardized data                                                              | Business-ready data                                                | Aggregated insights and predictions                         |
+| **Interface**     | Files in folders                     | Loaded via stored procedures                       | Loaded via stored procedures                                                               | Surfaced via SQL views                                             | BI tools, SQL clients, ML notebooks                         |
+| **Load Strategy** | N/A (delivered manually)             | • Batch processing<br>• Full load<br>• Truncate & insert | • Batch processing<br>• Full load<br>• Truncate & insert                                   | No physical load (views compute on read)                           | Read-only access                                            |
+| **Transformations** | None                               | None — data is preserved as-is                     | • Data cleansing<br>• Data standardization<br>• Data normalization<br>• Derived columns<br>• Data enrichment | • Data integration<br>• Aggregations<br>• Business logic           | Defined inside the consumer (BI tool, query, or model)      |
+| **Data Model**    | None (as-is)                         | None (as-is)                                       | None (as-is)                                                                               | • Star schema<br>• Flat tables<br>• Aggregated tables              | Tailored to the consumption use case                        |
+| **Engine**        | Source systems                       | SQL Server                                         | SQL Server                                                                                 | SQL Server                                                         | Power BI, Tableau, SQL clients, Python/ML frameworks        |
 
 ---
+
+### What Each Layer Adds
+
+| Layer       | What It Adds Over the Previous Stage                                                                  |
+|-------------|--------------------------------------------------------------------------------------------------------|
+| 🥉 **Bronze** | A reliable, queryable copy of source data — no more parsing CSVs ad-hoc.                              |
+| 🥈 **Silver** | Trust — data is now clean, deduplicated, validated, and consistent across source systems.             |
+| 🥇 **Gold**   | Business meaning — raw entities become customers, products, and sales modeled for analytical questions.|
+
+---
+
+### Consumption Patterns
+
+The Gold layer is designed to serve three distinct consumer profiles, each with different needs:
+
+| Consumer Type            | Typical Tools                          | What They Need from Gold                                |
+|--------------------------|----------------------------------------|---------------------------------------------------------|
+| 📊 **BI & Reporting**     | Power BI, Tableau, Looker              | Pre-modeled dimensions and facts for dashboards         |
+| 🔎 **Ad-Hoc SQL Analysts**| SSMS, DBeaver, DataGrip                | Clean, joinable views for exploratory queries           |
+| 🤖 **Machine Learning**   | Python, scikit-learn, TensorFlow       | Flat, feature-rich tables for model training            |
 
 ## 📖 Project Overview
 
